@@ -1,0 +1,537 @@
+---
+title: "I made a Portfolio Website. Here's how I did it."
+date: "2026-03-16"
+summary: "How I designed and deployed my personal portfolio using Next.js, MDX, Tailwind, and GitHub Actions."
+tags: ["Next.js", "GitHub Pages", "MDX", "Tailwind CSS", "Portfolio"]
+---
+
+## How I Started
+
+This portfolio website started as a way to showcase my projects and writing in one clean, professional place. As a CS student building apps like PhishGuard and MCP, I needed a site that highlighted my work without the hassle of paid hosting.
+
+```tsx
+// Homepage Bento Grid Implementation
+'use client'
+
+import { useState } from 'react'
+import { BentoGrid } from '@/components/bento/BentoGrid'
+import { Github } from '@/components/bento/Github'
+import { Youtube } from '@/components/bento/Youtube'
+
+export default function HomePage() {
+  const [theme, setTheme] = useState('light')
+
+  return (
+    <div className={`theme-${theme}`}>
+      <BentoGrid columns={3}>
+        <Github />
+        <Youtube />
+        <div className="bento-card">
+          <h3>Projects</h3>
+          <p>Showcase of my work</p>
+        </div>
+      </BentoGrid>
+    </div>
+  )
+}
+```
+
+GitHub Pages was perfect since I already push code daily, and I wanted a stack that matched my React/Next.js workflow. The goal: **A fast, content-driven site that deploys automatically and looks great on any device.**
+
+### Why Next.js + GitHub Pages
+
+I chose **Next.js 15** for its excellent App Router, static generation, and MDX support via Contentlayer. Combined with GitHub Pages, it gave me:
+
+1. **Static exports** for free hosting.
+2. **MDX-powered content** in `content/blog` and `content/project`.
+3. **Automatic builds** via `.github/workflows/nextjs.yml`.
+4. **Zero-config deployment** to `gh-pages` branch.
+
+```yaml
+# GitHub Actions Workflow
+name: Build and Deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build
+      - run: npm run export
+```
+
+### The Tech Stack Breakdown
+
+Here's what powers the site:
+
+- **Next.js App Router**: Static export and routing (`next.config.js`)
+- **Contentlayer**: MDX processing and content management (`contentlayer.config.ts`)
+- **Tailwind CSS**: Styling and responsive design (`tailwind.config.js`)
+- **TypeScript**: Type safety throughout (`tsconfig.json`)
+- **Custom hooks**: Interactive elements (`useMousePosition`, `useInterval`, etc.)
+
+```json
+{
+  "name": "portfolio",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@next/mdx": "^15.0.3",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "contentlayer": "^0.4.3",
+    "eslint": "^8",
+    "eslint-config-next": "15.0.3",
+    "next": "15.0.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "typescript": "^5",
+    "tailwindcss": "^3.4.1"
+  }
+}
+```
+
+I also added utility libraries like `formatDate.tsx` and `postFormatting.tsx` in `app/_utils` to keep components clean.
+
+### Designing the Homepage
+
+The homepage uses a **bento grid** (`components/bento/BentoGrid.tsx`) that mixes project cards, stats, and social links. It's responsive and uses Tailwind's grid system for perfect alignment.
+
+Key components:
+- `Github.tsx` and `Youtube.tsx` for dynamic feeds.
+- `FlipNumber.tsx` for animated counters.
+- `Halo.tsx` for subtle animations.
+
+```tsx
+// BentoGrid Component
+import { useState } from 'react'
+
+interface BentoGridProps {
+  children: React.ReactNode
+  columns?: number
+}
+
+export function BentoGrid({ children, columns = 3 }: BentoGridProps) {
+  return (
+    <div className={`grid grid-cols-1 md:grid-cols-${columns} gap-4`}>
+      {children}
+    </div>
+  )
+}
+
+// Individual Card Component
+export function BentoCard({ title, children }: { title: string; children: React.ReactNode }) {
+  return (
+    <div className="border rounded-lg p-6 hover:shadow-lg transition-shadow">
+      <h3 className="text-lg font-semibold mb-2">{title}</h3>
+      {children}
+    </div>
+  )
+}
+```
+
+Navigation (`components/Navigation.tsx`) is sticky and theme-aware via `ThemeProvider.tsx` and `ThemeSwitcher.tsx`.
+
+### Blog and Projects with MDX
+
+Content lives in `content/blog/*.mdx` and `content/project/*.mdx`, processed by Contentlayer. Blog posts render via `app/blog/[slug]/page.tsx` with components like `PostList.tsx` and `MdxWrapper.tsx`.
+
+Features I built:
+- **Tag filtering** (`components/Tags.tsx`).
+- **Rich embeds** like `Weather.tsx` and `LinkPreview.tsx`.
+- **Newsletter signup** (`NewsletterSignupForm.tsx`).
+- **Image optimization** with your custom `Image.tsx`.
+
+```tsx
+// Blog Listing Component
+import { PostList } from '@/blog/components/PostList'
+import { Tags } from '@/blog/components/Tags'
+
+export default function BlogPage() {
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  return (
+    <div>
+      <Tags 
+        tags={['Next.js', 'TypeScript', 'MDX']} 
+        selected={selectedTags}
+        onChange={setSelectedTags}
+      />
+      <PostList tags={selectedTags} />
+    </div>
+  )
+}
+
+// Post Component
+export function Post({ title, date, readingTime, excerpt }: PostProps) {
+  return (
+    <article className="border-b py-6">
+      <h2 className="text-2xl font-bold">{title}</h2>
+      <div className="text-sm text-gray-600 mt-2">
+        {date} • {readingTime} read
+      </div>
+      <p className="mt-4 text-gray-800">{excerpt}</p>
+    </article>
+  )
+}
+```
+
+Projects use `app/projects/[slug]/page.tsx` and `ProjectList.tsx` for cards linking to GitHub/live demos.
+
+### Custom Pages and Features
+
+Each section has dedicated pages:
+
+- **About** (`app/about/page.tsx`): `Gallery.tsx`, `Resume.tsx`, `TechStack.tsx`
+- **Contact** (`app/contact/page.tsx`): Serverless form via `app/api/contact/route.ts`
+- **Gear** (`app/gear/page.tsx`): Product showcase
+- **Links** (`app/links/page.tsx`): Curated resource list
+
+API routes handle newsletters (`app/api/newsletter`) and OG images (`app/api/og/route.tsx`).
+
+```tsx
+// About Page Components
+import { Gallery } from '@/about/components/Gallery'
+import { Resume } from '@/about/components/Resume'
+import { TechStack } from '@/about/components/TechStack'
+
+export default function AboutPage() {
+  return (
+    <div className="space-y-8">
+      <section>
+        <h1 className="text-4xl font-bold mb-4">About Me</h1>
+        <p className="text-lg">
+          Full-stack developer passionate about creating beautiful, functional websites.
+        </p>
+      </section>
+      
+      <TechStack />
+      <Gallery />
+      <Resume />
+    </div>
+  )
+}
+
+// TechStack Component
+export function TechStack() {
+  const technologies = [
+    { name: 'Next.js', level: 'Expert' },
+    { name: 'TypeScript', level: 'Advanced' },
+    { name: 'Tailwind CSS', level: 'Expert' },
+  ]
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {technologies.map((tech) => (
+        <div key={tech.name} className="border rounded-lg p-4">
+          <h3 className="font-semibold">{tech.name}</h3>
+          <p className="text-sm text-gray-600">{tech.level}</p>
+        </div>
+      ))}
+    </div>
+  )
+}
+```
+
+### Deployment with GitHub Actions
+
+The `.github/workflows/nextjs.yml` file automates everything:
+1. Lint/test on push.
+2. Build static export.
+3. Deploy to `gh-pages`.
+4. Separate workflows for contact forms and secrets testing.
+
+Pushing to `main` updates the live site in ~2 minutes. Public assets in `public/` (like `/public/blog/phishguard/`) serve directly.
+
+```yaml
+# Complete Deployment Workflow
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build
+        run: npm run build && npm run export
+      
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+### Performance and Polish
+
+Optimizations include:
+
+- **Static rendering**: Everything rendered statically where possible
+- **Lazy-loaded images**: WebP formats in `public/` with optimized loading
+- **Custom fonts**: `public/ticketing.woff2` for unique typography
+- **Wave backgrounds**: `components/ui/wave-background.tsx` for subtle animations
+- **Syntax highlighting**: Prism.js with `public/prism/one-dark.css` theme
+
+The site scores well on Lighthouse for performance and accessibility.
+
+```javascript
+// Performance Optimization Strategies
+export const performanceOptimizations = {
+  staticRendering: 'All pages use static generation where possible',
+  imageOptimization: 'WebP format with lazy loading',
+  bundleSplitting: 'Code splitting by route and component',
+  fontOptimization: 'Custom fonts with preloading',
+  syntaxHighlighting: 'Prism.js with theme customization'
+}
+
+// Bundle Analysis Script
+const analyzeBundle = () => {
+  const bundleSize = process.env.NODE_ENV === 'production' 
+    ? require('webpack-bundle-analyzer')
+    : null
+  
+  return bundleSize?.BundleAnalyzerPlugin
+}
+```
+
+### What I Learned
+
+This project leveled up my skills in:
+- Static site generation with dynamic content.
+- MDX ecosystems and Contentlayer.
+- Tailwind + TypeScript component libraries.
+- GitHub Actions for real CI/CD.
+
+It's already helped with internships by giving recruiters an easy way to see my full stack (PhishGuard ML backend → frontend portfolio).
+
+> Your portfolio is your best sales pitch — make it fast, beautiful, and easy to navigate.
+
+### Deployment Process: Step-by-Step Guide
+
+Here's exactly how I deployed this portfolio to GitHub Pages:
+
+#### 1. Project Setup
+```bash
+# Initialize Next.js project
+npx create-next-app@latest portfolio
+cd portfolio
+
+# Install dependencies
+npm install @next/mdx contentlayer tailwindcss @types/node
+
+# Initialize Git
+git init
+git add .
+git commit -m "Initial commit"
+```
+
+#### 2. GitHub Repository Creation
+1. Create new repository on GitHub (don't add README)
+2. Push to GitHub:
+```bash
+git remote add origin https://github.com/yourusername/portfolio.git
+git branch -M main
+git push -u origin main
+```
+
+#### 3. Configure Next.js for Static Export
+```javascript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+}
+
+module.exports = nextConfig
+```
+
+#### 4. Create GitHub Actions Workflow
+```yaml
+# .github/workflows/deploy.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - run: npm ci
+      - run: npm run build
+      - run: npm run export
+      
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./out
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+```
+
+#### 5. Configure GitHub Pages
+1. Go to repository Settings → Pages
+2. Select branch: `gh-pages`, folder: `/ (root)`
+3. Wait for first deployment (2-5 minutes)
+
+#### 6. Custom Domain (Optional)
+```yaml
+# .github/workflows/deploy.yml (add to deploy job)
+- name: Setup Pages
+  uses: actions/configure-pages@v4
+
+- name: Upload artifact
+  uses: actions/upload-pages-artifact@v3
+  with:
+    path: ./out
+
+- name: Deploy to GitHub Pages
+  id: deployment
+  uses: actions/deploy-pages@v4
+
+# Add CNAME file for custom domain
+echo "yourdomain.com" > public/CNAME
+```
+
+#### 7. Environment Variables
+For API routes (contact form, newsletter):
+1. Go to repository Settings → Secrets and variables → Actions
+2. Add secrets:
+   - `EMAIL_API_KEY`: For contact form
+   - `NEWSLETTER_API_KEY`: For newsletter
+   - `GITHUB_TOKEN`: Auto-provided
+
+#### 8. Content Management
+```bash
+# Add new blog post
+mkdir -p content/blog
+echo "---\ntitle: 'New Post'\ndate: '$(date -I)'\n---" > content/blog/new-post.mdx
+
+# Add new project
+echo "---\ntitle: 'New Project'\ndate: '$(date -I)'\n---" > content/project/new-project.mdx
+
+# Deploy changes
+git add .
+git commit -m "Add new content"
+git push origin main
+```
+
+#### 9. Troubleshooting Common Issues
+```bash
+# Build fails
+npm run build  # Test locally first
+
+# Images not loading
+# Ensure images are in public/ folder
+# Use absolute paths: /images/photo.png
+
+# Custom domain not working
+# Check CNAME file in public/ folder
+# Verify DNS settings with domain provider
+
+# 404 errors on refresh
+# Add _redirects file to public/ folder:
+echo "/* /index.html 200" > public/_redirects
+```
+
+#### 10. Performance Optimization
+```javascript
+// next.config.js optimizations
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  experimental: {
+    optimizeCss: true,
+  },
+}
+```
+
+This deployment process gives you:
+- Free hosting on GitHub Pages
+- Automatic deployments on push
+- Custom domain support
+- HTTPS by default
+- Fast static site performance

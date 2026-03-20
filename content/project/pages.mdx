@@ -1,0 +1,356 @@
+---
+title: "I made a Portfolio Website. Here's how I did it."
+date: "2026-03-17"
+summary: "Modern Next.js portfolio with MDX content, bento grids, and automatic GitHub Pages deployment."
+url: "https://blambrechtCodes.github.io"
+tags: ["Next.js", "MDX", "Tailwind CSS", "GitHub Pages", "Portfolio"]
+---
+
+## Project Overview
+
+A fully static portfolio website built with **Next.js App Router**, showcasing projects, blog posts, and personal info. Deployed to GitHub Pages with zero-cost hosting and automatic CI/CD.
+
+```tsx
+// Homepage Bento Grid Component
+import { BentoGrid } from '@/components/bento/BentoGrid'
+import { Github } from '@/components/bento/Github'
+import { Youtube } from '@/components/bento/Youtube'
+import { FlipNumber } from '@/components/FlipNumber'
+
+export default function HomePage() {
+  return (
+    <BentoGrid>
+      <Github />
+      <Youtube />
+      <FlipNumber value={42} label="Projects" />
+      {/* Other bento cards */}
+    </BentoGrid>
+  )
+}
+```
+
+Content is MDX-driven (`content/blog`, `content/project`) and processed by Contentlayer for type-safe rendering. Perfect for developers who want a professional site without server management.
+
+## Tech Stack
+
+**Tech Stack**
+
+- **Framework**: Next.js 15 (App Router, Static Export)
+- **Content**: MDX + Contentlayer  
+- **Styling**: Tailwind CSS + Custom Components
+- **Language**: TypeScript
+- **Deployment**: GitHub Actions → GitHub Pages
+- **Utils**: Custom hooks, API routes, OG generation
+
+Core dependencies from `package.json` focus on DX and performance.
+
+```javascript
+// next.config.js
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+}
+
+module.exports = nextConfig
+```
+
+```javascript
+// tailwind.config.js
+module.exports = {
+  content: ['./app/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
+  theme: {
+    extend: {},
+  },
+  plugins: [],
+}
+```
+
+## Key Features
+
+- **Bento Grid Homepage**: Dynamic cards (`BentoGrid.tsx`) for GitHub, YouTube, projects
+- **MDX Blog/Projects**: Rich components like `Weather.tsx`, `LinkPreview.tsx`
+- **Theme System**: Light/dark mode with `ThemeProvider.tsx`
+- **Forms/APIs**: Contact (`/api/contact`), newsletter (`/api/newsletter`)
+- **About/Gear**: Galleries, resume PDF, tech stack visuals
+
+```tsx
+// Blog Post Rendering
+import { MdxWrapper } from '@/blog/components/MdxWrapper'
+import { LinkPreview } from '@/blog/components/mdx/LinkPreview'
+
+export default function BlogPost({ content }) {
+  return (
+    <article>
+      <MdxWrapper>
+        {content}
+        <LinkPreview url="https://example.com" />
+      </MdxWrapper>
+    </article>
+  )
+}
+```
+
+## Folder Structure Highlights
+
+```
+app/
+├── blog/[slug]/page.tsx          # Dynamic blog posts
+├── projects/[slug]/page.tsx      # Project details
+├── about/components/             # Resume, TechStack, Gallery
+├── _utils/                       # formatDate, postFormatting
+content/
+├── blog/*.mdx                    # PhishGuard, MCP posts
+└── project/*.mdx                 # Project cards
+public/blog/*                     # Optimized images
+.github/workflows/nextjs.yml      # Auto-deploy
+```
+
+Assets in `public/` serve directly (e.g., `/public/blog/phishguard/*.png`).
+
+```javascript
+// Contentlayer Configuration
+import { defineDocumentType, makeSource } from 'contentlayer/source-files'
+
+const Blog = defineDocumentType(() => ({
+  name: 'Blog',
+  filePathPattern: `blog/**/*.mdx`,
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' } },
+  },
+}))
+
+export default makeSource({
+  contentDirPath: 'content',
+  documentTypes: [Blog],
+})
+```
+
+## Deployment Setup
+
+1. **Static Export**: `next.config.js` enables `output: 'export'`
+2. **Build Workflow**: `.github/workflows/nextjs.yml` runs `next build` and pushes to `gh-pages`
+3. **Custom Domain**: Optional via GitHub Pages settings
+4. **Secrets**: API keys in repo secrets (`test-secrets.yml`)
+
+Deploys in under 2 minutes per push to `main`.
+
+```yaml
+# .github/workflows/nextjs.yml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - run: npm install
+      - run: npm run build
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+```
+
+## Performance Metrics
+
+**Performance Metrics**
+
+- **Lighthouse**: Good (Performance, Accessibility, SEO)
+- **Bundle Size**: ~150KB gzipped
+- **Images**: WebP optimized in `public/`
+- **Core Web Vitals**: All green
+
+## Live Demo Sections
+
+The site scales from mobile to desktop with Tailwind's responsive utilities.
+
+## Repository
+
+## Deployment Guide
+
+### Quick Start Deployment
+
+Deploy this portfolio to GitHub Pages in under 10 minutes:
+
+#### Prerequisites
+- GitHub account
+- Node.js 18+ installed
+- Basic command line knowledge
+
+#### Step 1: Fork and Clone
+```bash
+# Fork the repository on GitHub, then clone
+git clone https://github.com/yourusername/Portfolio.git
+cd Portfolio
+
+# Install dependencies
+npm install
+```
+
+#### Step 2: Configure for Your Use
+```bash
+# Update package.json with your info
+npm pkg set name="your-portfolio-name"
+npm pkg set author="Your Name <you@example.com>"
+
+# Update Next.js config for your domain
+# next.config.js
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  // Add your custom domain
+  // assetPrefix: 'https://yourdomain.com',
+}
+```
+
+#### Step 3: Customize Content
+```bash
+# Replace images in public/ folder
+# Update content in content/blog/ and content/project/
+# Modify components in app/ to match your style
+```
+
+#### Step 4: Deploy to GitHub Pages
+```bash
+# Commit your changes
+git add .
+git commit -m "Customize portfolio"
+git push origin main
+
+# GitHub Actions will automatically deploy
+# Check Actions tab for deployment status
+```
+
+### Advanced Configuration
+
+#### Custom Domain Setup
+```bash
+# 1. Add CNAME file
+echo "yourdomain.com" > public/CNAME
+
+# 2. Configure DNS with your domain provider
+# Add CNAME record pointing to yourusername.github.io
+
+# 3. Update GitHub Pages settings
+# Settings → Pages → Custom domain: yourdomain.com
+```
+
+#### Environment Variables
+```bash
+# For contact form and newsletter functionality
+# Settings → Secrets and variables → Actions
+
+# Add these secrets:
+EMAIL_API_KEY=your_email_service_key
+NEWSLETTER_API_KEY=your_newsletter_key
+```
+
+#### Performance Optimization
+```javascript
+// next.config.js
+const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true,
+  },
+  experimental: {
+    optimizeCss: true,
+    scrollRestoration: true,
+  },
+  compress: true,
+}
+```
+
+### Troubleshooting
+
+#### Common Issues
+```bash
+# Build fails locally
+npm run build  # Test build process
+
+# Images not loading
+# Ensure images are in public/ folder
+# Use absolute paths: /images/photo.png
+
+# 404 on page refresh
+# Add _redirects file for SPA routing
+echo "/* /index.html 200" > public/_redirects
+
+# Custom domain not working
+# Check CNAME file exists in public/
+# Verify DNS settings with domain provider
+# Wait up to 24 hours for DNS propagation
+```
+
+#### Performance Tips
+- Use WebP images in `public/` folder
+- Minimize bundle size with code splitting
+- Enable compression in `next.config.js`
+- Use lazy loading for images and components
+
+### Maintenance
+
+#### Adding New Content
+```bash
+# New blog post
+mkdir -p content/blog
+cat > content/blog/new-post.mdx << 'EOF'
+---
+title: "New Blog Post"
+date: "2024-01-01"
+tags: ["Next.js", "Portfolio"]
+---
+
+Your content here...
+EOF
+
+# New project
+cat > content/project/new-project.mdx << 'EOF'
+---
+title: "New Project"
+date: "2024-01-01"
+tags: ["React", "TypeScript"]
+---
+
+Project description...
+EOF
+```
+
+#### Updating Dependencies
+```bash
+# Check for updates
+npm outdated
+
+# Update dependencies
+npm update
+
+# Test build after updates
+npm run build
+```
+
+This deployment process provides:
+- ✅ Free hosting on GitHub Pages
+- ✅ Automatic CI/CD with GitHub Actions
+- ✅ Custom domain support
+- ✅ HTTPS by default
+- ✅ Fast static site performance
+- ✅ Easy content management with MDX
+
+Source code and full setup: [GitHub Repo](https://github.com/yourusername/Portfolio)
+
+Fork it, tweak the content MDX files, and deploy your own version in minutes.
