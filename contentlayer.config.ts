@@ -18,6 +18,7 @@ const blogComputedFields: ComputedFields = {
         case 'MCP': return '/blog/mcp/image_light.png';
         case 'pages': return '/blog/pages/image_light.png';
         case 'phishguard': return '/blog/phishguard/image_light.png';
+        case 'coders-website': return '/blog/CODERS_Website/image_light.png';
         default: return null;
       }
     },
@@ -35,6 +36,7 @@ const projectComputedFields: ComputedFields = {
         case 'mcp': return '/projects/mcp/image_light.png';
         case 'pages': return '/projects/pages/image_light.png';
         case 'phishguard': return '/projects/phishguard/image_light.png';
+        case 'coders-website': return '/projects/coders-website/image_light.png';
         default: return `/projects/${slug}/image_light.png`;
       }
     },
