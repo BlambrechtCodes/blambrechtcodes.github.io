@@ -14,7 +14,7 @@ The journey of PhishGuard began in August of 2025. As a student at UW-La Crosse,
   width={800}
   height={400}
   caption="IT support environment where the project originated"
-  src="/blog/phishguard/IT.png"
+  src="/blog/phishguard/IT.webp"
 />
 
 A professor could receive an email that appeared to be from our university's IT department, complete with official logos and convincing language. The email could have a link to "verify account security" - a classic phishing tactic. Despite their security training, the professor could click the link and enter their credentials, compromising years of valuable data and potentially their careers.
@@ -30,7 +30,7 @@ Along with my Partner in this project, Zach Ydunate, our initial approach was to
   width={800}
   height={400}
   caption="Chrome extension architecture design"
-  src="/blog/phishguard/ChromeArch.png"
+  src="/blog/phishguard/ChromeArch.webp"
 />
 
 However, I quickly realized the limitations of this approach:
@@ -56,7 +56,7 @@ This decision led me down the path of full-stack development, where I had to lea
   width={800}
   height={400}
   caption="Full-stack architecture of PhishGuard"
-  src="/blog/phishguard/FullStack.png"
+  src="/blog/phishguard/FullStack.webp"
 />
 
 ### The Machine Learning Breakthrough
@@ -70,7 +70,7 @@ The breakthrough came when I discovered the PhiUSIIL Phishing URL Dataset - a co
   width={800}
   height={400}
   caption="Machine learning model development process"
-  src="/blog/phishguard/MLmodel.png"
+  src="/blog/phishguard/MLmodel.webp"
 />
 
 Through iterative testing and refinement, I developed a system that could analyze over 50 different features from URLs and HTML content, achieving impressive accuracy rates:
@@ -89,7 +89,7 @@ What started as a simple idea to help protect my campus community evolved into a
 - **Security awareness**: Understanding the evolving landscape of cyber threats
 - **Open-source collaboration**: Building something that benefits the broader community
 
-> "The best security tools are those that make protection accessible to everyone, not just experts." - Project Philosophy
+> The best security tools are those that make protection accessible to everyone, not just experts.
 
 PhishGuard represents more than just a technical achievement - it's a testament to how real-world problems can inspire meaningful innovation. The project continues to evolve, with new features and improvements driven by user feedback and the ever-changing landscape of cybersecurity threats.
 
@@ -106,7 +106,7 @@ Imagine you're a university student checking your email. You receive a message t
   width={800}
   height={400}
   caption="Example of a phishing email targeting university students"
-  src="/blog/phishguard/PhishAttack.png"
+  src="/blog/phishguard/PhishAttack.webp"
 />
 
 The email looks legitimate at first glance:
@@ -133,7 +133,7 @@ Let me demonstrate how our system would analyze this malicious URL:
   width={800}
   height={400}
   caption="PhishGuard analysis of a phishing URL"
-  src="/blog/phishguard/1.png"
+  src="/blog/phishguard/1.webp"
 />
 
 **Step 1: URL Structure Analysis**
@@ -147,7 +147,7 @@ Let me demonstrate how our system would analyze this malicious URL:
   width={800}
   height={400}
   caption="Detailed feature breakdown showing suspicious indicators"
-  src="/blog/phishguard/2.png"
+  src="/blog/phishguard/2.webp"
 />
 
 **Step 2: HTML Content Analysis**
@@ -161,7 +161,7 @@ Let me demonstrate how our system would analyze this malicious URL:
   width={800}
   height={400}
   caption="HTML analysis revealing malicious patterns"
-  src="/blog/phishguard/3.png"
+  src="/blog/phishguard/3.webp"
 />
 
 **Step 3: Image Analysis**
@@ -174,7 +174,7 @@ Let me demonstrate how our system would analyze this malicious URL:
   width={800}
   height={400}
   caption="Image analysis detecting tracking mechanisms"
-  src="/blog/phishguard/4.png"
+  src="/blog/phishguard/4.webp"
 />
 
 **Step 4: Final Assessment**
@@ -185,31 +185,13 @@ Based on our machine learning model's analysis of all these features:
   width={800}
   height={400}
   caption="Final risk assessment with confidence scoring"
-  src="/blog/phishguard/5.png"
+  src="/blog/phishguard/5.webp"
 />
 
 - **Risk Level**: HIGH
 - **Confidence**: 94%
 - **Prediction**: PHISHING
 - **Recommendation**: DO NOT ENTER CREDENTIALS
-
-### The Impact of Early Detection
-
-With PhishGuard's analysis, you would receive this warning before entering any sensitive information:
-
-<Image
-  contained
-  width={800}
-  height={400}
-  caption="User interface showing clear warning to the user"
-  src="/blog/phishguard/6.png"
-/>
-
-This early detection could prevent:
-- **Identity Theft**: Your login credentials remain secure
-- **Financial Loss**: No access to linked payment methods
-- **Data Breach**: Your personal information stays protected
-- **Account Takeover**: Your university accounts remain under your control
 
 ### Real-World Validation
 
@@ -226,7 +208,7 @@ What makes PhishGuard even more powerful is its ability to learn from new attack
   width={800}
   height={400}
   caption="Model improvement through user feedback and retraining"
-  src="/blog/phishguard/7.png"
+  src="/blog/phishguard/7.webp"
 />
 
 This continuous learning approach ensures that PhishGuard stays ahead of evolving phishing tactics, providing ongoing protection against both known and emerging threats.
@@ -250,8 +232,8 @@ The architecture follows a microservices-inspired design, allowing for easy scal
 
 The user interface was designed with simplicity and accessibility in mind. Users can simply paste a URL into the input field and receive an instant analysis with clear visual indicators:
 
-- **🟢 LEGITIMATE**: Safe website with high confidence
-- **🔴 PHISHING**: Potential threat detected
+- **LEGITIMATE**: Safe website with high confidence
+- **PHISHING**: Potential threat detected
 - **Confidence Score**: Percentage indicating model certainty
 - **Feature Analysis**: Breakdown of factors contributing to the prediction
 
@@ -261,7 +243,7 @@ The dashboard is fully responsive, working seamlessly across desktop, tablet, an
 
 PhishGuard operates through a sophisticated multi-step process that combines URL analysis with machine learning prediction:
 
-### 1. URL Validation and Normalization 🌐
+### 1. URL Validation and Normalization
 
 The system first validates and normalizes the input URL to ensure consistent analysis:
 
@@ -274,7 +256,7 @@ def validate_accessible_http_url(url: str, require_html: bool = False, timeout: 
     return is_valid, error_message, final_url
 ```
 
-### 2. Feature Extraction 🔍
+### 2. Feature Extraction
 
 We extract over 50 different features from each URL, including:
 
@@ -293,7 +275,7 @@ def featurize_url(url: str, fetch_html_flag: bool = True):
     return features_dict, auxiliary_data
 ```
 
-### 3. Machine Learning Prediction 🤖
+### 3. Machine Learning Prediction
 
 The extracted features are fed into our trained machine learning model:
 
@@ -306,7 +288,7 @@ def predict_phishing(url: str):
     return prediction, probability
 ```
 
-### 4. Real-time API Response 📡
+### 4. Real-time API Response
 
 The system provides instant feedback through a RESTful API:
 
@@ -345,7 +327,7 @@ The model is continuously improved through user feedback and automatic retrainin
 
 ## Advanced Features
 
-### Image Analysis 🖼️
+### Image Analysis
 
 PhishGuard includes sophisticated image analysis capabilities:
 
@@ -354,7 +336,7 @@ PhishGuard includes sophisticated image analysis capabilities:
 - Identification of suspicious image patterns
 - Size and format validation
 
-### Caching System ⚡
+### Caching System
 
 To ensure lightning-fast response times, we implement a multi-layered caching strategy:
 
@@ -363,7 +345,7 @@ To ensure lightning-fast response times, we implement a multi-layered caching st
 - Model inference result caching
 - Automatic cache invalidation and updates
 
-### Shadow Model Retraining 🔄
+### Shadow Model Retraining
 
 The system supports automatic model retraining through shadow models:
 
@@ -436,16 +418,6 @@ To truly appreciate the power and usability of PhishGuard, I've created a compre
 </div>
 
 
-### Key Features Demonstrated
-
-<Image
-  contained
-  width={800}
-  height={400}
-  caption="Real-time analysis dashboard with detailed results"
-  src="/blog/phishguard/8.png"
-/>
-
 **Comprehensive Analysis**
 - Over 50 different features analyzed per URL
 - Real-time processing with instant results
@@ -456,13 +428,13 @@ To truly appreciate the power and usability of PhishGuard, I've created a compre
   contained
   width={800}
   height={400}
-  caption="Mobile interface showing responsive design"
-  src="/blog/phishguard/9.png"
+  caption="Showcase of Website Attributes and their Probability of Phishing"
+  src="/blog/phishguard/9.webp"
 />
 
 **User-Friendly Interface**
 - Intuitive design requiring no technical knowledge
-- Clear visual indicators (🟢/🔴) for quick understanding
+- Clear visual indicators for quick understanding
 - Detailed explanations for users who want to learn more
 - Responsive design that works on any device
 
@@ -471,7 +443,7 @@ To truly appreciate the power and usability of PhishGuard, I've created a compre
   width={800}
   height={400}
   caption="Feature analysis showing technical details"
-  src="/blog/phishguard/10.png"
+  src="/blog/phishguard/10.webp"
 />
 
 **Educational Value**
@@ -494,7 +466,7 @@ The demo showcases PhishGuard's impressive performance capabilities:
   width={800}
   height={400}
   caption="Performance metrics and system statistics"
-  src="/blog/phishguard/11.png"
+  src="/blog/phishguard/11.webp"
 />
 
 ### Technical Architecture
@@ -506,13 +478,6 @@ The video also provides insights into the technical architecture that makes Phis
 - **Caching Strategy**: Redis-based caching for lightning-fast responses
 - **Security Measures**: Comprehensive input validation and rate limiting
 
-<Image
-  contained
-  width={800}
-  height={400}
-  caption="System architecture and component interaction"
-  src="/blog/phishguard/12.png"
-/>
 
 ### Real-World Impact
 
@@ -523,17 +488,10 @@ Most importantly, the demo illustrates how PhishGuard makes a real difference in
 - **Accessibility**: Makes advanced security analysis available to everyone
 - **Continuous Improvement**: Learns from new attack patterns and user feedback
 
-### Try It Yourself
-
-After watching the demo, you can experience PhishGuard firsthand by visiting the live application. The interface is designed to be intuitive and accessible, whether you're a cybersecurity expert or someone just looking to stay safe online.
-
-The video serves as both a technical showcase and a user guide, demonstrating that powerful security tools don't have to be complex or intimidating. PhishGuard proves that cutting-edge machine learning can be made accessible to everyone, helping create a safer internet for all users.
 
 ## Wrapping things up
 
 PhishGuard represents a comprehensive approach to web security, combining machine learning, modern web development practices, and user-centered design. The project demonstrates how open-source collaboration can create meaningful security tools that protect users in an increasingly complex digital landscape.
-
-The system's modular architecture makes it easy to extend and improve, while its comprehensive feature set provides robust protection against modern phishing threats. Most importantly, PhishGuard serves as an educational tool, helping users understand the characteristics of malicious websites and make more informed decisions about their online security.
 
 If you're interested in contributing to the ongoing development of PhishGuard or learning more about the technical implementation, you can find the complete source code and documentation on the [GitHub repository](https://github.com/yourusername/phishGuard).
 

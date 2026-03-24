@@ -15,15 +15,15 @@ const blogComputedFields: ComputedFields = {
     resolve: (doc) => {
       const slug = getSlug(doc);
       switch(slug) {
-        case 'MCP': return '/blog/mcp/image_light.png';
-        case 'pages': return '/blog/pages/image_light.png';
-        case 'phishguard': return '/blog/phishguard/image_light.png';
-        case 'coders-website': return '/blog/CODERS_Website/image_light.png';
+        case 'MCP': return '/blog/mcp/image_light.webp';
+        case 'pages': return '/blog/pages/image_light.webp';
+        case 'phishguard': return '/blog/phishguard/image_light.webp';
+        case 'coders-website': return '/blog/CODERS_Website/image_light.webp';
         default: return null;
       }
     },
   },
-  og: { type: "string", resolve: (doc) => `/blog/${getSlug(doc)}/image.png` },
+  og: { type: "string", resolve: (doc) => `/blog/${getSlug(doc)}/image.webp` },
 };
 
 const projectComputedFields: ComputedFields = {
@@ -33,11 +33,11 @@ const projectComputedFields: ComputedFields = {
     resolve: (doc) => {
       const slug = getSlug(doc);
       switch(slug) {
-        case 'mcp': return '/projects/mcp/image_light.png';
-        case 'pages': return '/projects/pages/image_light.png';
-        case 'phishguard': return '/projects/phishguard/image_light.png';
-        case 'coders-website': return '/projects/coders-website/image_light.png';
-        default: return `/projects/${slug}/image_light.png`;
+        case 'mcp': return '/projects/mcp/image_light.webp';
+        case 'pages': return '/projects/pages/image_light.webp';
+        case 'phishguard': return '/projects/phishguard/image_light.webp';
+        case 'coders-website': return '/projects/coders-website/image_light.webp';
+        default: return `/projects/${slug}/image_light.webp`;
       }
     },
   },
