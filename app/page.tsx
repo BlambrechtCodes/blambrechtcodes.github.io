@@ -1,5 +1,6 @@
 'use client'
 
+import { Metadata } from "next";
 import { allBlogs } from "contentlayer/generated";
 import { ArrowUpRightIcon } from "@heroicons/react/20/solid";
 import { allProjects } from "contentlayer/generated";
@@ -8,6 +9,10 @@ import PostList from "@/app/blog/components/PostList";
 import ProjectList from "@/app/projects/components/ProjectList";
 import { Waves } from "@/components/ui/wave-background";
 import { useState, useEffect } from 'react';
+
+export const metadata: Metadata = {
+  title: "Home | Brendan Lambrecht",
+};
 
 export default function Home() {
   const blogs = allBlogs
