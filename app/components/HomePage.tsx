@@ -62,7 +62,7 @@ export default function HomePage({ blogs, projects }: HomePageProps) {
                 </h1>
                 <p className="max-w-lg animate-in text-gray-700 dark:text-gray-200 drop-shadow-xl text-sm md:text-base"
                   style={{ "--index": 1 } as React.CSSProperties}>
-                  {"I'm"} a Software Controls Test intern in LAX. Building the future of automation testing. Working to become a full-stack Software Engineer. On the side, I create{" "}
+                  {"I'm"} a Software Developer Intern. Building the future and working to become a Full-Stack Software Engineer. On the side, I create{" "}
                   <Link href="https://youtube.com/@BrenDeveloper" className="text-blue-600 dark:text-blue-300 hover:text-blue-500 dark:hover:text-blue-200">YouTube</Link> videos
                   about tech, productivity, and my journey through life.
                 </p>
@@ -104,8 +104,8 @@ export default function HomePage({ blogs, projects }: HomePageProps) {
                   <ArrowUpRightIcon className="h-4 w-4 md:h-5 md:w-5 text-gray-500 dark:text-gray-400 transition-all group-hover:text-gray-700 dark:group-hover:text-white" />
                 </Link>
                 <p className="max-w-lg text-gray-600 dark:text-gray-400 text-pretty drop-shadow-md text-sm md:text-base">
-                  I occasionally write about programming, productivity, and more.
-                  Check me out and subscribe to stay up to date.
+                  I occasionally write about programming, my own research (for fun), productivity, and more.
+                  Check out my articles to stay up to date.
                 </p>
               </div>
               <div className="text-gray-900 dark:text-white">

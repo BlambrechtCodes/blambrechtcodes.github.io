@@ -19,6 +19,7 @@ const blogComputedFields: ComputedFields = {
         case 'pages': return '/blog/pages/image_light.webp';
         case 'phishguard': return '/blog/phishguard/image_light.webp';
         case 'coders-website': return '/blog/CODERS_Website/image_light.webp';
+        case 'new-internship': return '/blog/new-internship/image_light.webp';
         default: return null;
       }
     },
