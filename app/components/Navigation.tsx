@@ -18,10 +18,10 @@ const links = [
     path: "/",
     title: "Home",
   },
-  {
-    path: "/gear",
-    title: "Gear",
-  },
+  // {
+  //   path: "/gear",
+  //   title: "Gear",
+  // },
   {
     path: "/contact",
     title: "Contact",

@@ -30,7 +30,7 @@ async function getYoutubeStats() {
     return parseInt(data.items?.[0]?.statistics?.subscriberCount || 0) || 0;
   } catch (error) {
     console.error("YouTube API error:", error);
-    return 21; // Your fallback
+    return 23; // Your fallback
   }
 }
 
