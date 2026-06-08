@@ -19,7 +19,7 @@ export default function Resume() {
           {/* Resume Preview Image */}
           <div className="relative aspect-[3/4] max-w-md mx-auto rounded-lg overflow-hidden shadow-xl">
             <Image
-              src="/resume/resume.webp"
+              src="/resume/resume.png"
               alt="Resume Preview"
               fill
               className="object-cover"
@@ -35,9 +35,9 @@ export default function Resume() {
 
           {/* Download Button */}
           <div className="mt-8 text-center">
-            <a 
-              href="/resume/resume.webp"
-              download="Brendan_Lambrecht_Resume.pdf"
+            <a
+              href="/resume/resume.png"
+              download="Brendan_Lambrecht_Resume.png"
               className="group/btn relative inline-flex items-center gap-3 px-6 py-3 bg-primary text-contrast rounded-full font-medium transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-primary/30 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
             >
               {/* Button Glow Effect */}
